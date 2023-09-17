@@ -6,6 +6,14 @@ Sleeping for a short time can be relaxing.
 
 ## Documentation
 
+### Synopsis
+
+```console
+usage: nap [base [variation]]
+```
+
+### Help
+
 ```console
 ❯ ./nap help
 Nap implements real sleep (offering sub-second busy waits). The first real
@@ -32,7 +40,7 @@ Examples:
 Caveat emptor: Maybe this command is not useful for your use cases.
 ```
 
-## Building
+### Building
 
 ```console
 ❯ go fmt && go vet && go build -ldflags "-s -w"
@@ -55,6 +63,49 @@ total:			(statements)	97.6%
 ❯ open coverage.html
 ```
 
+### Explorative Testing
+
+Testing the default scenario against some sleep binary a random machine provides:
+
+```console
+❯ hyperfine --warmup 1 ./sleep-1-wrapper ./nap
+Benchmark 1: ./sleep-1-wrapper
+  Time (mean ± σ):      1.021 s ±  0.001 s    [User: 0.004 s, System: 0.006 s]
+  Range (min … max):    1.018 s …  1.023 s    10 runs
+
+Benchmark 2: ./nap
+  Time (mean ± σ):      1.015 s ±  0.002 s    [User: 0.003 s, System: 0.004 s]
+  Range (min … max):    1.011 s …  1.018 s    10 runs
+
+Summary
+  ./nap ran
+    1.01 ± 0.00 times faster than ./sleep-1-wrapper
+```
+
+With the wrapper being:
+
+```console
+❯ cat sleep-1-wrapper
+#! /usr/bin/env bash
+sleep 1
+```
+
+Testing one scenario with [hyperfine](https://crates.io/crates/hyperfine):
+
+```console
+❯ hyperfine ./local-bench
+Benchmark 1: ./local-bench
+  Time (mean ± σ):     771.1 ms ± 137.3 ms    [User: 5.6 ms, System: 7.3 ms]
+  Range (min … max):   671.3 ms … 1137.2 ms    10 runs
+```
+
+The zero argument wrapper:
+
+```console
+❯ cat local-bench
+#! /usr/bin/env bash
+./nap 0.75 0.1
+```
 ## Bug Tracker
 
 Any feature requests or bug reports shall go to the [todos of nap](https://todo.sr.ht/~sthagen/nap).
