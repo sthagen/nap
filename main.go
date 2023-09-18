@@ -68,7 +68,7 @@ Examples:
 Caveat emptor: Maybe this command is not useful for your use cases.` // update after go doc nap shows different help
 	MILLIS  = 1000 // Rescaling to adapt to the time.Duration domain
 	USAGE   = "usage: nap [base [variation]]"
-	VERSION = "v2023.9.19"
+	VERSION = "v2023.9.20"
 )
 
 // ParseFloat parses the given text as positive float and returns code, message, and parsed value as tuple.
