@@ -1,5 +1,6 @@
-nap
-local*
-go.sum
+PUBLICATIO.tmp
 coverage*
-sleep-1-wrapper
+go.sum
+local*
+nap
+share
