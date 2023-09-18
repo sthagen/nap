@@ -33,12 +33,23 @@ The flags are:
     -h
         print the usage information.
 
+    -v
+        print the version information.
+
 Examples:
 
 ❯ nap 0.75 0.1 # sleeps for a randomly selected duration in [0.65, 0.85] seconds
 
 Caveat emptor: Maybe this command is not useful for your use cases.
 ```
+
+### Version
+
+```console
+> ./nap version
+v2023.9.19
+```
+
 
 ### Building
 
