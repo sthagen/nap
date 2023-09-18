@@ -3,4 +3,6 @@ coverage*
 go.sum
 local*
 nap
+nap-local
+nap.exe
 share
