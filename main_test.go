@@ -67,18 +67,36 @@ func TestRandomDurationZeroVariation(t *testing.T) {
 // TestHelpRequested calls nap.HelpRequested with a match in the list
 func TestHelpRequested(t *testing.T) {
 	args := []string{"1", "help"}
-	helpdDetected := HelpRequested(args)
-	if !helpdDetected {
-		t.Fatalf(`HelpRequested(["1", "help"]) = %v, %v, want match for %v`, helpdDetected, args, true)
+	helpDetected := HelpRequested(args)
+	if !helpDetected {
+		t.Fatalf(`HelpRequested(["1", "help"]) = %v, %v, want match for %v`, helpDetected, args, true)
 	}
 }
 
 // TestHelpRequested calls nap.HelpRequested with no match in the list
 func TestHelpRequestedNone(t *testing.T) {
+	args := []string{"1", "2", "a", "b", "c", "d"}
+	helpDetected := HelpRequested(args)
+	if helpDetected {
+		t.Fatalf(`HelpRequested(["1", "2", "a", "b", "c", "d"]) = %v, %v, want match for %v`, helpDetected, args, false)
+	}
+}
+
+// TestVersionRequested calls nap.VersionRequested with a match in the list
+func TestVersionRequested(t *testing.T) {
+	args := []string{"1", "v"}
+	versionDetected := VersionRequested(args)
+	if !versionDetected {
+		t.Fatalf(`VersionRequested(["1", "v"]) = %v, %v, want match for %v`, versionDetected, args, true)
+	}
+}
+
+// TestVersionRequestedNone calls nap.VersionRequested with no match in the list
+func TestVersionRequestedNone(t *testing.T) {
 	args := []string{"1", "hel", "/h", "--Help", "-H", "?"}
-	helpdDetected := HelpRequested(args)
-	if helpdDetected {
-		t.Fatalf(`HelpRequested(["1", "hel", "/h", "--Help", "-H", "?"]) = %v, %v, want match for %v`, helpdDetected, args, false)
+	versionDetected := VersionRequested(args)
+	if versionDetected {
+		t.Fatalf(`VersionRequested(["1", "hel", "/h", "--Help", "-H", "?"]) = %v, %v, want match for %v`, versionDetected, args, false)
 	}
 }
 
@@ -158,6 +176,19 @@ func TestExecuteHelp(t *testing.T) {
 	}
 	if HELP+"\n" != output.String() {
 		t.Errorf("got %s but expected 'the help text'", output.String())
+	}
+}
+
+// TestExecuteVersion calls nap.Execute with a valid version argument.
+func TestExecuteVersion(t *testing.T) {
+	args := []string{"version"}
+	var output bytes.Buffer
+	code := Execute(&output, 0, args)
+	if code != 0 {
+		t.Errorf(`Execute(["version"]) = %v, want match for %v"`, code, 0)
+	}
+	if VERSION+"\n" != output.String() {
+		t.Errorf("got %s but expected 'the version text'", output.String())
 	}
 }
 

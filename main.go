@@ -16,6 +16,9 @@ The flags are:
 	-h
 	    print the usage information.
 
+	-v
+	    print the version information.
+
 Examples:
 
 ❯ nap 0.75 0.1  # sleeps for a randomly selected duration in [0.65, 0.85] seconds
@@ -32,6 +35,7 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -54,13 +58,17 @@ The flags are:
     -h
         print the usage information.
 
+    -v
+        print the version information.
+
 Examples:
 
 ❯ nap 0.75 0.1 # sleeps for a randomly selected duration in [0.65, 0.85] seconds
 
 Caveat emptor: Maybe this command is not useful for your use cases.` // update after go doc nap shows different help
-	MILLIS = 1000 // Rescaling to adapt to the time.Duration domain
-	USAGE  = "usage: nap [base [variation]]"
+	MILLIS  = 1000 // Rescaling to adapt to the time.Duration domain
+	USAGE   = "usage: nap [base [variation]]"
+	VERSION = "v2023.9.19"
 )
 
 // ParseFloat parses the given text as positive float and returns code, message, and parsed value as tuple.
@@ -106,8 +114,19 @@ func RandomDuration(base float64, variation float64) float64 {
 // HelpRequested searches for typical help requests in the command arguments and returns the result.
 func HelpRequested(args []string) bool {
 	for _, cmd := range args {
-		switch cmd {
-		case "help", "-h", "--help", "-?", "/H", "/help":
+		cmdLower := strings.ToLower(cmd)
+		if strings.Contains(cmdLower, "h") || strings.Contains(cmdLower, "?") {
+			return true
+		}
+	}
+	return false
+}
+
+// VersionRequested searches for typical version requests in the command arguments and returns the result.
+func VersionRequested(args []string) bool {
+	for _, cmd := range args {
+		cmdLower := strings.ToLower(cmd)
+		if strings.Contains(cmdLower, "v") {
 			return true
 		}
 	}
@@ -126,6 +145,10 @@ func HandleAnyErrors(w io.Writer, err error, code int) {
 func Execute(w io.Writer, seed int64, args []string) int {
 	if len(args) > 0 && HelpRequested(args) {
 		fmt.Fprintln(w, HELP)
+		return 0
+	}
+	if len(args) > 0 && VersionRequested(args) {
+		fmt.Fprintln(w, VERSION)
 		return 0
 	}
 
