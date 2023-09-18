@@ -4,7 +4,7 @@ The first real value argument (base) in seconds determines the base duration.
 When given a real number as second argument (variation)
 the duration will vary uniform randomly plus minus the 2nd argument.
 
-Default mode just sleeps for approx. one second.
+Default mode just sleeps for a second.
 This behavior is identical to when given a single argument of 1.
 
 Usage:
@@ -14,10 +14,10 @@ Usage:
 The flags are:
 
 	-h
-	    print the usage information.
+	    display help message
 
 	-v
-	    print the version information.
+	    display the version string
 
 Examples:
 
@@ -46,7 +46,7 @@ value argument (base) in seconds determines the base duration. When given a real
 number as second argument (variation) the duration will vary uniform randomly
 plus minus the 2nd argument.
 
-Default mode just sleeps for approx. one second. This behavior is identical to
+Default mode just sleeps for a second. This behavior is identical to
 when given a single argument of 1.
 
 Usage:
@@ -56,10 +56,10 @@ Usage:
 The flags are:
 
     -h
-        print the usage information.
+        display help message
 
     -v
-        print the version information.
+        display the version string
 
 Examples:
 
