@@ -66,7 +66,7 @@ tag: release
 
 .PHONY: clean
 clean:
-	@rm -f coverage.{html,out} nap share/man/man1/nap.1 PUBLICATIO.tmp
+	@rm -f coverage.{html,out} nap{'',-local,.exe} share/man/man1/nap.1 PUBLICATIO.tmp
 
 .PHONY: name
 name:
