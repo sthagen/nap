@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := all
 package = nap
-version = 2023.9.19
+version = 2023.9.20
 
 .PHONY: format
 format:
@@ -12,7 +12,13 @@ lint:
 
 .PHONY: build
 build:
-	@go build -ldflags "-s -w"
+	@echo ... building for linux/amd64, local, and windows/amd64
+	@env GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o nap
+	@go build -ldflags "-s -w" -o nap-local
+	@env GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o nap.exe
+	@echo ... smoke test of local app
+	@./nap-local v
+	@./nap-local h
 
 .PHONY: man
 man:
@@ -43,6 +49,12 @@ release: all
 	@printf "\n" >> PUBLICATIO.tmp
 	@printf "Changes:\n\n" >> PUBLICATIO.tmp
 	@python bin/gen_tag_changes.py >> PUBLICATIO.tmp
+	@printf "\n" >> PUBLICATIO.tmp
+	@printf "\n" >> PUBLICATIO.tmp
+	@printf "Fingerprints:\n\n" >> PUBLICATIO.tmp
+	@bin/gen_fingerprints.sh nap >> PUBLICATIO.tmp
+	@printf "\n" >> PUBLICATIO.tmp
+	@bin/gen_fingerprints.sh nap.exe >> PUBLICATIO.tmp
 	@printf "\n" >> PUBLICATIO.tmp
 	@cat PUBLICATIO.tmp
 
