@@ -22,12 +22,13 @@ build:
 
 .PHONY: man
 man:
+	@mkdir -p share/man/man1
 	@pandoc docs/nap.1.md -s -t man -o share/man/man1/nap.1
 	@echo ... man share/man/man1/nap.1
 
 .phony: spellcheck
 spellcheck:
-	@vale --config etc/vale.ini README.md main.go nap.1.md
+	@vale --config etc/vale.ini README.md main.go docs/nap.1.md
 
 .PHONY: test
 test:
